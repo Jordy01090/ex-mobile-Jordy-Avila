@@ -1,57 +1,146 @@
-# Automatización Mobile - SwagLabs (Serenity BDD + Cucumber + Appium)
+# 📱 SwagLabs Mobile — Serenity BDD + Appium (Android)
 
-## Requisitos
-- **JDK**: 8, 11 o 17 (recomendado 11)
-- **Maven**: 3.9.1
-- **Android Studio/SDK** con `adb` y un emulador Android 10+ (o dispositivo real con Depuración USB)
-- **Node.js** y **Appium Server**:
-  ```bash
-  npm install -g appium appium-doctor
-  appium-doctor --android
-  ```
+Automatización móvil del flujo **Login → Productos** en la app **SwagLabs (Android nativa)** usando:
 
-## Configuración
-1. Descarga el APK de SwagLabs (Android) y coloca su **ruta absoluta** en `serenity.properties` en la clave:
-   ```
-   appium.app=${user.dir}/apps/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
-   ```
+- **Java 11**
+- **Maven**
+- **Serenity BDD (Screenplay + Cucumber)**
+- **Appium (UiAutomator2)**
 
-2. Prepara credenciales (opcional): el test leerá primero `src/test/resources/data/credentials.json`; si no lo encuentra o está vacío, intentará `credentials.csv`; si tampoco está, usará por defecto `standard_user / secret_sauce`.
-   - JSON (`src/test/resources/data/credentials.json`):
-     ```json
-     { "user": "standard_user", "pass": "secret_sauce" }
-     ```
-   - CSV (`src/test/resources/data/credentials.csv`):
-     ```csv
-     user,pass
-     standard_user,secret_sauce
-     ```
+---
 
-## Ejecutar
-1. Inicia Appium en una terminal:
+## ✅ Requisitos previos (una sola vez en tu PC)
+
+1. **Java (JDK 11 o superior)**  
+   Verifica:
    ```bash
-   appium --base-path /wd/hub
+   java -version
    ```
-2. Inicia/empareja tu emulador o conecta el dispositivo y verifica con:
+
+2. **Maven 3.9.x o superior**  
+   Verifica:
    ```bash
-   adb devices
+   mvn -version
    ```
-3. En el proyecto:
+
+3. **Node.js y npm**  
+   Verifica:
    ```bash
-   mvn clean test
+   node -v
+   npm -v
    ```
 
-## Reportes
-- Abre `target/site/serenity/index.html` tras la ejecución.
+4. **Appium Server**
+   ```bash
+   npm install -g appium
+   appium -v
+   appium driver install uiautomator2
+   appium driver list   # Debe mostrar uiautomator2 instalado
+   ```
 
-## Estructura (Screenplay)
-- **UI**: `screenplay/ui` (elementos/locators)
-- **Tasks**: `screenplay/tasks` (acciones del actor)
-- **Questions**: `screenplay/questions` (validaciones)
-- **Steps**: `stepdefinitions` (Glue Cucumber)
-- **Runner**: `runner/CucumberTestSuite.java`
-- **Feature**: `src/test/resources/features/login.feature`
+5. **Android SDK / Platform Tools**
+   ```bash
+   adb version
+   ```
 
-## Notas
-- Si un locator falla, inspecciónalo con **Appium Inspector** y ajusta los XPaths/IDs.
-- Recomendado fijar JAVA_HOME y ANDROID_HOME correctamente, y tener habilitado `adb` en PATH.
+6. (Opcional) **Verificar entorno**
+   ```bash
+   npm install -g appium-doctor
+   appium-doctor --android
+   ```
+
+> ⚠️ El **APK de SwagLabs ya está incluido** en el proyecto (`apps/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk`).  
+> No necesitas descargarlo manualmente.
+
+---
+
+## 📦 Clonar el proyecto
+
+```bash
+git clone https://github.com/<tu-usuario>/serenity-appium-swaglabs-mobile-tests.git
+cd serenity-appium-swaglabs-mobile-tests
+```
+
+---
+
+## 📱 Iniciar un dispositivo Android
+
+1. Abre Android Studio → Device Manager  
+2. Crea un emulador (Android 11+) y ejecútalo  
+3. Verifica con `adb devices` que aparezca como `emulator-5554`
+
+---
+
+## ⚙️ Configuración incluida (serenity.properties)
+
+```properties
+webdriver.driver=appium
+appium.hub=http://127.0.0.1:4723/wd/hub
+appium.platformName=Android
+appium.automationName=UiAutomator2
+appium.udid=emulator-5554
+appium.app=${user.dir}/apps/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
+appium.appPackage=com.swaglabsmobileapp
+appium.appActivity=com.swaglabsmobileapp.MainActivity
+appium.appWaitActivity=*
+appium.autoGrantPermissions=true
+appium.newCommandTimeout=120
+
+serenity.project.name=SwagLabs Mobile
+serenity.outputDirectory=target/site/serenity
+serenity.encoding=UTF-8
+serenity.report.encoding=UTF-8
+serenity.encode.outcomes=true
+serenity.console.colors=true
+serenity.logging=VERBOSE
+
+serenity.take.screenshots=FOR_FAILURES
+serenity.reports.show.step.details=false
+```
+
+---
+
+## ▶️ Ejecución de pruebas
+
+1️⃣ Inicia Appium Server:
+```bash
+appium --base-path /wd/hub
+```
+
+2️⃣ Ejecuta las pruebas:
+```bash
+mvn clean test
+```
+
+---
+
+## 📊 Reportes Serenity
+
+Se generan automáticamente en:
+```
+target/site/serenity/index.html
+```
+
+### Cómo abrirlo
+- IntelliJ → clic derecho → *Open in Browser → Chrome*  
+- Explorador (Windows): `C:\Users\<TU_USUARIO>\Documents\serenity-appium-swaglabs-mobile-tests\target\site\serenity\index.html`
+
+---
+
+## 🧠 Escenario incluido
+
+```gherkin
+Feature: Login en SwagLabs (Android)
+
+  @mobile
+  Scenario: Login exitoso y visualización de productos
+    Given que la app está abierta
+    When ingreso credenciales válidas
+    Then debería ver el título "PRODUCTS"
+    And debería existir al menos un producto en la lista
+```
+
+---
+
+**Autor:** Jordy Ávila  
+**Proyecto:** Serenity BDD + Appium Mobile Automation — SwagLabs (Android)
