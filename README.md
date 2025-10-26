@@ -71,33 +71,6 @@ cd serenity-appium-swaglabs-mobile-tests
 
 ---
 
-## ⚙️ Configuración incluida (serenity.properties)
-
-```properties
-webdriver.driver=appium
-appium.hub=http://127.0.0.1:4723/wd/hub
-appium.platformName=Android
-appium.automationName=UiAutomator2
-appium.udid=emulator-5554
-appium.app=${user.dir}/apps/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
-appium.appPackage=com.swaglabsmobileapp
-appium.appActivity=com.swaglabsmobileapp.MainActivity
-appium.appWaitActivity=*
-appium.autoGrantPermissions=true
-appium.newCommandTimeout=120
-
-serenity.project.name=SwagLabs Mobile
-serenity.outputDirectory=target/site/serenity
-serenity.encoding=UTF-8
-serenity.report.encoding=UTF-8
-serenity.encode.outcomes=true
-serenity.console.colors=true
-serenity.logging=VERBOSE
-
-serenity.take.screenshots=FOR_FAILURES
-serenity.reports.show.step.details=false
-```
-
 ---
 
 ## ▶️ Ejecución de pruebas
@@ -127,20 +100,6 @@ target/site/serenity/index.html
 
 ---
 
-## 🧠 Escenario incluido
-
-```gherkin
-Feature: Login en SwagLabs (Android)
-
-  @mobile
-  Scenario: Login exitoso y visualización de productos
-    Given que la app está abierta
-    When ingreso credenciales válidas
-    Then debería ver el título "PRODUCTS"
-    And debería existir al menos un producto en la lista
-```
-
----
 
 **Autor:** Jordy Ávila  
 **Proyecto:** Serenity BDD + Appium Mobile Automation — SwagLabs (Android)
