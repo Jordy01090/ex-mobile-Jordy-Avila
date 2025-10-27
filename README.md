@@ -2,7 +2,7 @@
 
 Automatización móvil del flujo **Login → Productos** en la app **SwagLabs (Android nativa)** usando:
 
-- **Java 11**
+- **Java 17**
 - **Maven**
 - **Serenity BDD (Screenplay + Cucumber)**
 - **Appium (UiAutomator2)**
@@ -11,13 +11,13 @@ Automatización móvil del flujo **Login → Productos** en la app **SwagLabs (A
 
 ## ✅ Requisitos previos (una sola vez en tu PC)
 
-1. **Java (JDK 11 o superior)**  
+1. **Java (JDK 17 o superior)**  
    Verifica:
    ```bash
    java -version
    ```
 
-2. **Maven 3.9.x o superior**  
+2. **Maven 3.9.11**  
    Verifica:
    ```bash
    mvn -version
